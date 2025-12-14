@@ -9,49 +9,51 @@
 
 ## 📖 Description
 
-GlobalVillagerDiscounts is a lightweight plugin that shares villager trade discounts among all players. When any player earns a discount by **curing a zombie villager**, that discount becomes available to **everyone** on the server.
+GlobalVillagerDiscounts shares villager trade discounts among all players. When any player earns a discount by **curing a zombie villager**, that discount becomes available to **everyone** on the server.
 
 ### How It Works
 
 1. Player cures a zombie villager → earns discount
-2. Plugin captures and stores the discount (in `PersistentDataContainer`)
+2. Plugin captures and stores the discount (by recipe hash)
 3. Any other player trading with that villager gets the same discount
 4. Best discount always wins
+5. Discounts auto-clear on profession change
 
-> **Note:** Hero of the Village discounts are **not** shared as they are temporary player effects.
+> **Note:** Hero of the Village discounts are **not** shared (temporary effect).
 
 ## ✨ Features
 
 - 🔌 **Plug & Play** - No configuration needed
-- 💾 **Persistent Storage** - Discounts survive server restarts
-- 🛡️ **Safe Pricing** - Prices never go below 1 emerald
+- 💾 **Persistent Storage** - Discounts survive restarts
+- 🛡️ **Safe Pricing** - Prices never below 1 emerald
 - ⚡ **Lightweight** - Minimal performance impact
 - 🔧 **Admin Controls** - Per-villager management
-- 📦 **Zero Dependencies** - Only requires Spigot/Paper API
-- 🚫 **No Vanilla Modification** - Vanilla gossip untouched
+- 🔄 **Smart Storage** - Recipe-based matching (not index-based)
+- 🧹 **Auto-Cleanup** - Clears on profession change
 
 ## 🔧 Admin Commands
 
 | Command | Description |
 |---------|-------------|
-| `/gvd info` | Show synced discount info for looked-at villager |
-| `/gvd clear` | Clear synced discounts from looked-at villager |
-| `/gvd disable` | Disable sync for specific villager |
-| `/gvd enable` | Enable sync for specific villager |
+| `/gvd info` | Show synced discount info |
+| `/gvd clear` | Clear discounts (single villager) |
+| `/gvd clearall` | Clear ALL discounts (all villagers) |
+| `/gvd disable` | Disable sync for villager |
+| `/gvd enable` | Enable sync for villager |
 
 **Permission:** `gvd.admin` (default: OP)
 
 ## 📋 Requirements
 
-- **Minecraft Server:** Spigot, Paper, or Purpur 1.21+
+- **Minecraft Server:** Spigot, Bukkit, Paper, or Purpur 1.21+
 - **Java:** 21 (LTS)
 
 ## 📥 Installation
 
-1. Download the latest `GlobalVillagerDiscounts-1.0.0.jar` from [Releases](https://github.com/murqin/GlobalVillagerDiscounts/releases)
-2. Place the JAR file in your server's `plugins` folder
-3. Restart your server
-4. Done! Works automatically.
+1. Download the latest JAR from [Releases](https://github.com/murqin/GlobalVillagerDiscounts/releases)
+2. Place in your `plugins` folder
+3. Restart server
+4. Done!
 
 ## 🔧 Building from Source
 
@@ -73,22 +75,18 @@ mvn clean package
 
 ## ⚠️ Important Notes
 
-- Discounts are stored **separately** from vanilla gossip
-- If plugin is removed, synced discounts stop working
-- Vanilla reputation system is **not modified**
+- Discounts stored **separately** from vanilla gossip
+- If plugin removed, synced discounts stop working
+- Profession change = discounts cleared automatically
 
 ## 📜 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+MIT License - see [LICENSE](LICENSE)
 
 ## 👤 Author
 
-**murqin**
-
-- GitHub: [@murqin](https://github.com/murqin)
+**murqin** - [@murqin](https://github.com/murqin)
 
 ---
 
-<p align="center">
-  Made with ❤️ for the Minecraft community
-</p>
+<p align="center">Made with ❤️ for the Minecraft community</p>
