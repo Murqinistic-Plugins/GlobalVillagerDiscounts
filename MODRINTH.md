@@ -52,6 +52,7 @@ GlobalVillagerDiscounts is a lightweight plugin that shares villager trade disco
 | Server | Supported |
 |--------|-----------|
 | Spigot | ✅ |
+| Bukkit | ✅ |
 | Paper | ✅ |
 | Purpur | ✅ |
 | Folia | ❌ |

@@ -66,6 +66,7 @@ mvn clean package
 | Server Software | Supported |
 |-----------------|-----------|
 | Spigot          | ✅        |
+| Bukkit          | ✅        |
 | Paper           | ✅        |
 | Purpur          | ✅        |
 | Folia           | ❌        |
