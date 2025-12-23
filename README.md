@@ -58,7 +58,7 @@ GlobalVillagerDiscounts shares villager trade discounts among all players. When 
 ## 🔧 Building from Source
 
 ```bash
-git clone https://github.com/murqin/GlobalVillagerDiscounts.git
+git clone https://github.com/Murqinistic-Plugins/GlobalVillagerDiscounts.git
 cd GlobalVillagerDiscounts
 mvn clean package
 ```
