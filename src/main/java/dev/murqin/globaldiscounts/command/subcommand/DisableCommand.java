@@ -33,8 +33,12 @@ public class DisableCommand implements SubCommand {
             return;
         }
 
+        int cleared = discountService.clearDiscounts(villager);
         discountService.disableSync(villager);
-        sender.sendMessage(ChatColor.YELLOW + "Bu köylü için indirim senkronizasyonu DEVRE DIŞI BIRAKILDI.");
+        
+        sender.sendMessage(ChatColor.YELLOW + "=== Senkronizasyon Kapatıldı ===");
+        sender.sendMessage(ChatColor.GRAY + "Meslek: " + ChatColor.WHITE + villager.getProfession());
+        sender.sendMessage(ChatColor.GRAY + "Temizlenen indirim: " + ChatColor.WHITE + cleared);
     }
 
     @Override

@@ -34,7 +34,10 @@ public class ClearCommand implements SubCommand {
         }
 
         int cleared = discountService.clearDiscounts(villager);
-        sender.sendMessage(ChatColor.GREEN + String.valueOf(cleared) + " senkronize indirim temizlendi.");
+        
+        sender.sendMessage(ChatColor.GREEN + "=== İndirimler Temizlendi ===");
+        sender.sendMessage(ChatColor.GRAY + "Meslek: " + ChatColor.WHITE + villager.getProfession());
+        sender.sendMessage(ChatColor.GRAY + "Temizlenen: " + ChatColor.WHITE + cleared + " indirim");
     }
 
     @Override

@@ -7,6 +7,7 @@ import dev.murqin.globaldiscounts.listener.TradeListener;
 import dev.murqin.globaldiscounts.service.DiscountService;
 import dev.murqin.globaldiscounts.util.RecipeKeyGenerator;
 import dev.murqin.globaldiscounts.util.VillagerTargeter;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
@@ -20,8 +21,13 @@ import org.bukkit.plugin.java.JavaPlugin;
  */
 public final class GlobalVillagerDiscounts extends JavaPlugin {
 
+    private static final int BSTATS_PLUGIN_ID = 28505;
+
     @Override
     public void onEnable() {
+        // bStats metrikleri
+        new Metrics(this, BSTATS_PLUGIN_ID);
+        
         // Utility'leri oluştur
         RecipeKeyGenerator keyGenerator = new RecipeKeyGenerator(this);
         VillagerTargeter targeter = new VillagerTargeter();
@@ -40,6 +46,7 @@ public final class GlobalVillagerDiscounts extends JavaPlugin {
         commandExecutor.registerSubCommand(new ClearAllCommand(discountService));
         commandExecutor.registerSubCommand(new DisableCommand(discountService, targeter));
         commandExecutor.registerSubCommand(new EnableCommand(discountService, targeter));
+        commandExecutor.registerSubCommand(new ShareCommand(discountService, targeter));
         
         getCommand("gvd").setExecutor(commandExecutor);
         

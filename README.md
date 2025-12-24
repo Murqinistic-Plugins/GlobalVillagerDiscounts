@@ -31,17 +31,26 @@ GlobalVillagerDiscounts shares villager trade discounts among all players. When 
 - 🔄 **Smart Storage** - Recipe-based matching (not index-based)
 - 🧹 **Auto-Cleanup** - Clears on profession change
 
-## 🔧 Admin Commands
+## 🔧 Commands
 
+### Player Commands
 | Command | Description |
 |---------|-------------|
-| `/gvd info` | Show synced discount info |
-| `/gvd clear` | Clear discounts (single villager) |
-| `/gvd clearall` | Clear ALL discounts (all villagers) |
-| `/gvd disable` | Disable sync for villager |
-| `/gvd enable` | Enable sync for villager |
+| `/gvd info` | Show villager discount info |
+| `/gvd share on` | Enable discount sharing for target villager |
+| `/gvd share off` | Disable discount sharing for target villager |
 
-**Permission:** `gvd.admin` (default: OP)
+### Admin Commands
+| Command | Description |
+|---------|-------------|
+| `/gvd clear` | Clear discounts for target villager |
+| `/gvd clearall` | Clear ALL discounts from ALL villagers |
+| `/gvd disable` | Disable sync for target villager |
+| `/gvd enable` | Re-enable sync for target villager |
+
+> **Usage:** Look at a villager first, then run the command (except `clearall`).
+
+**Permission:** `gvd.admin` for admin commands (default: OP)
 
 ## 📋 Requirements
 

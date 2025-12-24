@@ -8,11 +8,10 @@ website: https://github.com/murqin/GlobalVillagerDiscounts
 
 commands:
   gvd:
-    description: Admin commands for GlobalVillagerDiscounts
-    usage: /gvd <info|clear|disable|enable>
-    permission: gvd.admin
+    description: GlobalVillagerDiscounts commands
+    usage: /gvd <info|toggle|clear|clearall|disable|enable>
 
 permissions:
   gvd.admin:
-    description: Allows use of /gvd admin commands
+    description: Allows use of admin commands (clear, clearall, disable, enable)
     default: op

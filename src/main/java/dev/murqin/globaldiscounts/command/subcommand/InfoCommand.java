@@ -35,19 +35,26 @@ public class InfoCommand implements SubCommand {
             return;
         }
 
+        boolean isAdmin = player.hasPermission("gvd.admin");
         boolean syncEnabled = discountService.isSyncEnabled(villager);
         
-        sender.sendMessage(ChatColor.GREEN + "=== Senkronize İndirim Bilgisi ===");
-        sender.sendMessage(ChatColor.YELLOW + "UUID: " + ChatColor.WHITE + villager.getUniqueId());
+        sender.sendMessage(ChatColor.GREEN + "=== Köylü Bilgisi ===");
+        
+        // UUID sadece adminlere gösterilir
+        if (isAdmin) {
+            sender.sendMessage(ChatColor.YELLOW + "UUID: " + ChatColor.WHITE + villager.getUniqueId());
+        }
+        
         sender.sendMessage(ChatColor.YELLOW + "Meslek: " + ChatColor.WHITE + villager.getProfession());
-        sender.sendMessage(ChatColor.YELLOW + "Senkronizasyon Aktif: " + 
-                          (syncEnabled ? ChatColor.GREEN + "Evet" : ChatColor.RED + "Hayır"));
+        sender.sendMessage(ChatColor.YELLOW + "Senkronizasyon: " + 
+                          (syncEnabled ? ChatColor.GREEN + "Aktif" : ChatColor.RED + "Kapalı"));
         
         List<String[]> discounts = discountService.getStoredDiscounts(villager);
         
         if (discounts.isEmpty()) {
-            sender.sendMessage(ChatColor.GRAY + "  Kayıtlı senkronize indirim yok.");
+            sender.sendMessage(ChatColor.GRAY + "  Kayıtlı indirim yok.");
         } else {
+            sender.sendMessage(ChatColor.YELLOW + "İndirimler:");
             for (String[] discount : discounts) {
                 sender.sendMessage(ChatColor.GRAY + "  " + discount[0] + 
                                   ": " + ChatColor.AQUA + discount[1] + " zümrüt");

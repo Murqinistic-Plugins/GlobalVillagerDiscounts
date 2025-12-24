@@ -30,11 +30,6 @@ public class GvdCommandExecutor implements CommandExecutor {
             return false;
         }
 
-        if (!sender.hasPermission("gvd.admin")) {
-            sender.sendMessage(ChatColor.RED + "Bu komutu kullanma izniniz yok.");
-            return true;
-        }
-
         if (args.length == 0) {
             sendHelp(sender);
             return true;
@@ -43,15 +38,25 @@ public class GvdCommandExecutor implements CommandExecutor {
         String subCommandName = args[0].toLowerCase();
         SubCommand subCommand = subCommands.get(subCommandName);
 
-        if (subCommand != null) {
-            // Alt argümanları ayarla (ilk argümanı çıkar)
-            String[] subArgs = new String[args.length - 1];
-            System.arraycopy(args, 1, subArgs, 0, args.length - 1);
-            
-            subCommand.execute(sender, subArgs);
-        } else {
+        if (subCommand == null) {
             sendHelp(sender);
+            return true;
         }
+
+        // Oyuncu komutları: info, share - herkes kullanabilir
+        // Admin komutları: clear, clearall, disable, enable - gvd.admin gerektirir
+        boolean isPlayerCommand = subCommandName.equals("info") || subCommandName.equals("share");
+        
+        if (!isPlayerCommand && !sender.hasPermission("gvd.admin")) {
+            sender.sendMessage(ChatColor.RED + "Bu komutu kullanma izniniz yok.");
+            return true;
+        }
+
+        // Alt argümanları ayarla (ilk argümanı çıkar)
+        String[] subArgs = new String[args.length - 1];
+        System.arraycopy(args, 1, subArgs, 0, args.length - 1);
+        
+        subCommand.execute(sender, subArgs);
 
         return true;
     }

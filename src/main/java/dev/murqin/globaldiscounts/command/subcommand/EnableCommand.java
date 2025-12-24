@@ -34,7 +34,9 @@ public class EnableCommand implements SubCommand {
         }
 
         discountService.enableSync(villager);
-        sender.sendMessage(ChatColor.GREEN + "Bu köylü için indirim senkronizasyonu ETKİNLEŞTİRİLDİ.");
+        
+        sender.sendMessage(ChatColor.GREEN + "=== Senkronizasyon Açıldı ===");
+        sender.sendMessage(ChatColor.GRAY + "Meslek: " + ChatColor.WHITE + villager.getProfession());
     }
 
     @Override
