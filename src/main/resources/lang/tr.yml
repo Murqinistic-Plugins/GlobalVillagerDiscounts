@@ -1,0 +1,50 @@
+# GlobalVillagerDiscounts Dil Dosyası - Türkçe
+# Bu Türkçe dil dosyasıdır.
+
+# Hatalar
+player-only: "&cBu komut bir oyuncu tarafından kullanılmalıdır."
+no-permission: "&cBu komutu kullanma izniniz yok."
+look-at-villager: "&cBu komutu kullanmak için bir köylüye bakın."
+share-usage: "&cKullanım: /gvd share <on|off>"
+
+# Info komutu
+info-header: "&a=== Köylü Bilgisi ==="
+info-profession: "&7Meslek: &f"
+info-sync-status: "&7Senkronizasyon: "
+info-sync-active: "&aAktif"
+info-sync-disabled: "&cKapalı"
+info-no-discounts: "&7  Kayıtlı indirim yok."
+info-discounts-header: "&eİndirimler:"
+info-uuid: "&eUUID: &f"
+info-lock-status: "&7Kilit Durumu: "
+info-locked: "&cKilitli"
+info-unlocked: "&aAçık"
+
+# Share komutu
+share-enabled-header: "&a=== Paylaşım Açıldı ==="
+share-disabled-header: "&e=== Paylaşım Kapatıldı ==="
+share-cleared: "&7Temizlenen indirim: &f"
+
+# Clear komutu
+clear-header: "&a=== İndirimler Temizlendi ==="
+clear-count: "&7Temizlenen: &f"
+clear-suffix: " indirim"
+
+# ClearAll komutu
+clearall-result: "&a%d köylüden %d indirim temizlendi."
+
+# Lock komutları
+villager-locked: "&cBu köylü kilitli. Sadece adminler paylaşım ayarını değiştirebilir."
+already-locked: "&eBu köylü zaten kilitli."
+not-locked: "&eBu köylü kilitli değil."
+lock-success: "&a=== Köylü Kilitlendi ==="
+unlock-success: "&a=== Kilit Açıldı ==="
+
+# Yardım
+help-header-player: "&a=== GlobalVillagerDiscounts ==="
+help-header-admin: "&a=== GVD Admin Komutları ==="
+
+# Log mesajları (konsol)
+log-career-change: "Meslek değişikliği nedeniyle %s köylüsünden %d senkronize indirim temizlendi."
+log-enabled: "GlobalVillagerDiscounts etkinleştirildi!"
+log-disabled: "GlobalVillagerDiscounts devre dışı bırakıldı."

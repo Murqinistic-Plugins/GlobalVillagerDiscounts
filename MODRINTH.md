@@ -9,12 +9,11 @@ GlobalVillagerDiscounts shares villager trade discounts among all players. When 
 ### How It Works
 
 1. Player cures a zombie villager → earns discount
-2. Plugin captures and stores the discount (by recipe hash)
+2. Plugin captures and stores the discount
 3. Any other player trading with that villager gets the same discount
-4. Best discount always wins
-5. Discounts auto-clear on profession change
+4. Discounts auto-clear on profession change
 
-> **Note:** Hero of the Village discounts are **not** shared (temporary effect).
+> **Note:** Hero of the Village discounts are **not** shared.
 
 ## Features
 
@@ -22,34 +21,41 @@ GlobalVillagerDiscounts shares villager trade discounts among all players. When 
 - 💾 **Persistent** - Discounts survive restarts
 - 🛡️ **Safe** - Prices never below 1 emerald
 - ⚡ **Lightweight** - Minimal performance impact
-- 🔧 **Admin Controls** - Per-villager management
-- 🔄 **Smart Storage** - Recipe-based, not index-based
-- 🧹 **Auto-Cleanup** - Clears on profession change
+- 🌍 **Multi-Language** - English & Turkish, add your own!
+- � **Villager Locking** - Lock villagers to prevent player changes
+- �📊 **Tab Completion** - Easy command usage
 
 ## Commands
 
-### Player Commands
-| Command | Description |
-|---------|-------------|
-| `/gvd info` | Show villager discount info |
-| `/gvd share on` | Enable discount sharing for target villager |
-| `/gvd share off` | Disable discount sharing for target villager |
+| Command | Permission | Description |
+|---------|------------|-------------|
+| `/gvd info` | - | Show villager info (UUID only for admins) |
+| `/gvd share on/off` | - | Enable/disable discount sharing |
+| `/gvd clear` | `gvd.admin` | Clear target villager's discounts |
+| `/gvd clearall` | `gvd.admin` | Clear ALL discounts |
+| `/gvd lock` | `gvd.admin` | Lock villager (players can't change share) |
+| `/gvd unlock` | `gvd.admin` | Unlock villager |
 
-### Admin Commands
-| Command | Description |
-|---------|-------------|
-| `/gvd clear` | Clear discounts for target villager |
-| `/gvd clearall` | Clear ALL discounts from ALL villagers |
-| `/gvd disable` | Disable sync for target villager |
-| `/gvd enable` | Re-enable sync for target villager |
+> **Usage:** Look at a villager first, then run the command.
 
-> **Usage:** Look at a villager first, then run the command (except `clearall`).
+## Language Support
 
-**Permission:** `gvd.admin` for admin commands (default: OP)
+Built-in: **English (en)** & **Turkish (tr)**
+
+```yaml
+# config.yml
+language: en  # or tr
+```
+
+### Add Your Own Language
+1. Copy `lang/en.yml` to `lang/de.yml`
+2. Translate all messages
+3. Set `language: de` in config.yml
+4. Restart server
 
 ## Requirements
 
-- **Server:** Spigot, Bukkit, Paper, or Purpur 1.21+
+- **Server:** Spigot, Paper, or Purpur 1.21+
 - **Java:** 21
 
 ## Compatibility
@@ -57,20 +63,13 @@ GlobalVillagerDiscounts shares villager trade discounts among all players. When 
 | Server | Supported |
 |--------|-----------|
 | Spigot | ✅ |
-| Bukkit | ✅ |
 | Paper | ✅ |
 | Purpur | ✅ |
 | Folia | ❌ |
 
-## Important Notes
-
-- Discounts stored **separately** from vanilla gossip
-- If plugin removed, synced discounts stop working
-- Profession change = discounts cleared automatically
-
 ## Source Code
 
-[GitHub](https://github.com/murqin/GlobalVillagerDiscounts)
+[GitHub](https://github.com/Murqinistic-Plugins/GlobalVillagerDiscounts)
 
 ## License
 

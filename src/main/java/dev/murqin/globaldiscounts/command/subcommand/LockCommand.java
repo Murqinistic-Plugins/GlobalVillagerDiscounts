@@ -8,14 +8,15 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
 
 /**
- * Tek köylünün indirimlerini temizleyen admin komutu.
+ * Köylüyü kilitleyen admin komutu.
+ * Kilitli köylülerin share durumunu oyuncular değiştiremez.
  */
-public class ClearCommand implements SubCommand {
+public class LockCommand implements SubCommand {
 
     private final DiscountService discountService;
     private final VillagerTargeter targeter;
 
-    public ClearCommand(DiscountService discountService, VillagerTargeter targeter) {
+    public LockCommand(DiscountService discountService, VillagerTargeter targeter) {
         this.discountService = discountService;
         this.targeter = targeter;
     }
@@ -33,11 +34,14 @@ public class ClearCommand implements SubCommand {
             return;
         }
 
-        int cleared = discountService.clearDiscounts(villager);
-        
-        sender.sendMessage(Messages.CLEAR_HEADER());
+        if (discountService.isLocked(villager)) {
+            sender.sendMessage(Messages.ALREADY_LOCKED());
+            return;
+        }
+
+        discountService.lock(villager);
+        sender.sendMessage(Messages.LOCK_SUCCESS());
         sender.sendMessage(Messages.INFO_PROFESSION() + formatProfession(villager));
-        sender.sendMessage(Messages.CLEAR_COUNT() + cleared + Messages.CLEAR_SUFFIX());
     }
     
     private String formatProfession(Villager villager) {
@@ -46,11 +50,11 @@ public class ClearCommand implements SubCommand {
 
     @Override
     public String getName() {
-        return "clear";
+        return "lock";
     }
 
     @Override
     public String getDescription() {
-        return "Clear discounts for target villager";
+        return "Lock villager (players can't change share)";
     }
 }

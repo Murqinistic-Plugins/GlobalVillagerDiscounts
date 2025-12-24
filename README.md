@@ -27,34 +27,43 @@ GlobalVillagerDiscounts shares villager trade discounts among all players. When 
 - 💾 **Persistent Storage** - Discounts survive restarts
 - 🛡️ **Safe Pricing** - Prices never below 1 emerald
 - ⚡ **Lightweight** - Minimal performance impact
-- 🔧 **Admin Controls** - Per-villager management
-- 🔄 **Smart Storage** - Recipe-based matching (not index-based)
-- 🧹 **Auto-Cleanup** - Clears on profession change
+- 🌍 **Multi-Language** - English & Turkish included, add your own!
+- 🔒 **Villager Locking** - Lock villagers to prevent player changes
+- 📊 **Tab Completion** - Easy command usage
 
 ## 🔧 Commands
 
-### Player Commands
-| Command | Description |
-|---------|-------------|
-| `/gvd info` | Show villager discount info |
-| `/gvd share on` | Enable discount sharing for target villager |
-| `/gvd share off` | Disable discount sharing for target villager |
+| Command | Permission | Description |
+|---------|------------|-------------|
+| `/gvd info` | - | Show villager info (UUID only for admins) |
+| `/gvd share on/off` | - | Enable/disable discount sharing |
+| `/gvd clear` | `gvd.admin` | Clear target villager's discounts |
+| `/gvd clearall` | `gvd.admin` | Clear ALL discounts |
+| `/gvd lock` | `gvd.admin` | Lock villager (players can't change share) |
+| `/gvd unlock` | `gvd.admin` | Unlock villager |
 
-### Admin Commands
-| Command | Description |
-|---------|-------------|
-| `/gvd clear` | Clear discounts for target villager |
-| `/gvd clearall` | Clear ALL discounts from ALL villagers |
-| `/gvd disable` | Disable sync for target villager |
-| `/gvd enable` | Re-enable sync for target villager |
+> **Usage:** Look at a villager first, then run the command.
 
-> **Usage:** Look at a villager first, then run the command (except `clearall`).
+## 🌍 Language Support
 
-**Permission:** `gvd.admin` for admin commands (default: OP)
+Built-in languages: **English (en)** & **Turkish (tr)**
+
+### Configuration
+```yaml
+# config.yml
+language: en  # or tr
+```
+
+### Add Your Own Language
+1. Copy `plugins/GlobalVillagerDiscounts/lang/en.yml`
+2. Create `plugins/GlobalVillagerDiscounts/lang/de.yml`
+3. Translate all messages
+4. Set `language: de` in config.yml
+5. Restart server
 
 ## 📋 Requirements
 
-- **Minecraft Server:** Spigot, Bukkit, Paper, or Purpur 1.21+
+- **Minecraft Server:** Spigot, Paper, or Purpur 1.21+
 - **Java:** 21 (LTS)
 
 ## 📥 Installation
@@ -64,29 +73,14 @@ GlobalVillagerDiscounts shares villager trade discounts among all players. When 
 3. Restart server
 4. Done!
 
-## 🔧 Building from Source
-
-```bash
-git clone https://github.com/Murqinistic-Plugins/GlobalVillagerDiscounts.git
-cd GlobalVillagerDiscounts
-mvn clean package
-```
-
 ## 🤝 Compatibility
 
-| Server Software | Supported |
-|-----------------|-----------|
-| Spigot          | ✅        |
-| Bukkit          | ✅        |
-| Paper           | ✅        |
-| Purpur          | ✅        |
-| Folia           | ❌        |
-
-## ⚠️ Important Notes
-
-- Discounts stored **separately** from vanilla gossip
-- If plugin removed, synced discounts stop working
-- Profession change = discounts cleared automatically
+| Server | Supported |
+|--------|-----------|
+| Spigot | ✅ |
+| Paper | ✅ |
+| Purpur | ✅ |
+| Folia | ❌ |
 
 ## 📜 License
 

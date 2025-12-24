@@ -1,5 +1,6 @@
 package dev.murqin.globaldiscounts.command.subcommand;
 
+import dev.murqin.globaldiscounts.lang.Messages;
 import dev.murqin.globaldiscounts.service.DiscountService;
 import dev.murqin.globaldiscounts.util.VillagerTargeter;
 import org.bukkit.ChatColor;
@@ -11,6 +12,7 @@ import java.util.List;
 
 /**
  * Köylü indirim bilgilerini gösteren komut.
+ * Admin ise UUID gösterir, değilse göstermez.
  */
 public class InfoCommand implements SubCommand {
 
@@ -25,41 +27,48 @@ public class InfoCommand implements SubCommand {
     @Override
     public void execute(CommandSender sender, String[] args) {
         if (!(sender instanceof Player player)) {
-            sender.sendMessage(ChatColor.RED + "Bu komut bir oyuncu tarafından kullanılmalıdır.");
+            sender.sendMessage(Messages.PLAYER_ONLY());
             return;
         }
 
         Villager villager = targeter.getTargetVillager(player).orElse(null);
         if (villager == null) {
-            sender.sendMessage(ChatColor.RED + "Bu komutu kullanmak için bir köylüye bakın.");
+            sender.sendMessage(Messages.LOOK_AT_VILLAGER());
             return;
         }
 
-        boolean isAdmin = player.hasPermission("gvd.admin");
         boolean syncEnabled = discountService.isSyncEnabled(villager);
+        boolean isLocked = discountService.isLocked(villager);
+        boolean isAdmin = player.hasPermission("gvd.admin");
         
-        sender.sendMessage(ChatColor.GREEN + "=== Köylü Bilgisi ===");
+        sender.sendMessage(Messages.INFO_HEADER());
         
         // UUID sadece adminlere gösterilir
         if (isAdmin) {
-            sender.sendMessage(ChatColor.YELLOW + "UUID: " + ChatColor.WHITE + villager.getUniqueId());
+            sender.sendMessage(Messages.INFO_UUID() + villager.getUniqueId());
         }
         
-        sender.sendMessage(ChatColor.YELLOW + "Meslek: " + ChatColor.WHITE + villager.getProfession());
-        sender.sendMessage(ChatColor.YELLOW + "Senkronizasyon: " + 
-                          (syncEnabled ? ChatColor.GREEN + "Aktif" : ChatColor.RED + "Kapalı"));
+        sender.sendMessage(Messages.INFO_PROFESSION() + formatProfession(villager));
+        sender.sendMessage(Messages.INFO_SYNC_STATUS() + 
+                          (syncEnabled ? Messages.INFO_SYNC_ACTIVE() : Messages.INFO_SYNC_DISABLED()));
+        sender.sendMessage(Messages.INFO_LOCK_STATUS() + 
+                          (isLocked ? Messages.INFO_LOCKED() : Messages.INFO_UNLOCKED()));
         
         List<String[]> discounts = discountService.getStoredDiscounts(villager);
         
         if (discounts.isEmpty()) {
-            sender.sendMessage(ChatColor.GRAY + "  Kayıtlı indirim yok.");
+            sender.sendMessage(Messages.INFO_NO_DISCOUNTS());
         } else {
-            sender.sendMessage(ChatColor.YELLOW + "İndirimler:");
+            sender.sendMessage(Messages.INFO_DISCOUNTS_HEADER());
             for (String[] discount : discounts) {
                 sender.sendMessage(ChatColor.GRAY + "  " + discount[0] + 
-                                  ": " + ChatColor.AQUA + discount[1] + " zümrüt");
+                                  ": " + ChatColor.AQUA + discount[1]);
             }
         }
+    }
+    
+    private String formatProfession(Villager villager) {
+        return villager.getProfession().name().toLowerCase().replace("_", " ");
     }
 
     @Override
@@ -69,6 +78,6 @@ public class InfoCommand implements SubCommand {
 
     @Override
     public String getDescription() {
-        return "Senkronize indirim bilgisini göster";
+        return "Show villager discount info";
     }
 }

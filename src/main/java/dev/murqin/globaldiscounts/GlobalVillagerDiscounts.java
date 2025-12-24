@@ -2,6 +2,8 @@ package dev.murqin.globaldiscounts;
 
 import dev.murqin.globaldiscounts.command.GvdCommandExecutor;
 import dev.murqin.globaldiscounts.command.subcommand.*;
+import dev.murqin.globaldiscounts.lang.LanguageManager;
+import dev.murqin.globaldiscounts.lang.Messages;
 import dev.murqin.globaldiscounts.listener.CareerChangeListener;
 import dev.murqin.globaldiscounts.listener.TradeListener;
 import dev.murqin.globaldiscounts.service.DiscountService;
@@ -13,11 +15,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 /**
  * GlobalVillagerDiscounts - Köylü ticaret indirimlerini tüm oyuncular arasında senkronize eder.
  * 
- * <p>İndirimleri tarif hash'ine göre (sonuç + malzeme) doğru eşleştirme için saklar.
- * Meslek değişikliğinde indirimleri temizler. Vanilla dedikodu sisteminden ayrıdır.</p>
- * 
  * @author murqin
- * @version 1.2.0
+ * @version 1.3.0
  */
 public final class GlobalVillagerDiscounts extends JavaPlugin {
 
@@ -25,6 +24,15 @@ public final class GlobalVillagerDiscounts extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        // Config'i yükle
+        saveDefaultConfig();
+        
+        // Dil sistemini başlat
+        LanguageManager languageManager = new LanguageManager(this);
+        String language = getConfig().getString("language", "en").toLowerCase();
+        languageManager.loadLanguage(language);
+        Messages.init(languageManager);
+        
         // bStats metrikleri
         new Metrics(this, BSTATS_PLUGIN_ID);
         
@@ -41,20 +49,23 @@ public final class GlobalVillagerDiscounts extends JavaPlugin {
         
         // Komut sistemini kur
         GvdCommandExecutor commandExecutor = new GvdCommandExecutor();
-        commandExecutor.registerSubCommand(new InfoCommand(discountService, targeter));
-        commandExecutor.registerSubCommand(new ClearCommand(discountService, targeter));
-        commandExecutor.registerSubCommand(new ClearAllCommand(discountService));
-        commandExecutor.registerSubCommand(new DisableCommand(discountService, targeter));
-        commandExecutor.registerSubCommand(new EnableCommand(discountService, targeter));
-        commandExecutor.registerSubCommand(new ShareCommand(discountService, targeter));
+        
+        // Komutları kaydet (isim, admin-only)
+        commandExecutor.registerCommand(new InfoCommand(discountService, targeter), false);
+        commandExecutor.registerCommand(new ShareCommand(discountService, targeter), false);
+        commandExecutor.registerCommand(new ClearCommand(discountService, targeter), true);      // Admin-only
+        commandExecutor.registerCommand(new ClearAllCommand(discountService), true);              // Admin-only
+        commandExecutor.registerCommand(new LockCommand(discountService, targeter), true);        // Admin-only
+        commandExecutor.registerCommand(new UnlockCommand(discountService, targeter), true);      // Admin-only
         
         getCommand("gvd").setExecutor(commandExecutor);
+        getCommand("gvd").setTabCompleter(commandExecutor);
         
-        getLogger().info("GlobalVillagerDiscounts etkinleştirildi! Admin komutları için /gvd kullanın.");
+        getLogger().info(Messages.LOG_ENABLED());
     }
 
     @Override
     public void onDisable() {
-        getLogger().info("GlobalVillagerDiscounts devre dışı bırakıldı.");
+        getLogger().info(Messages.LOG_DISABLED());
     }
 }

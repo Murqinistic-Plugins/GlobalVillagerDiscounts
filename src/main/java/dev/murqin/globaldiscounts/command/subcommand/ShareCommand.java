@@ -1,15 +1,15 @@
 package dev.murqin.globaldiscounts.command.subcommand;
 
+import dev.murqin.globaldiscounts.lang.Messages;
 import dev.murqin.globaldiscounts.service.DiscountService;
 import dev.murqin.globaldiscounts.util.VillagerTargeter;
-import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
 
 /**
- * Oyuncunun köylü için indirim paylaşımını açıp kapatan komut.
- * Kullanım: /gvd share on|off
+ * Köylü için indirim paylaşımını açıp kapatan komut.
+ * Kilitli köylülerde sadece admin değiştirebilir.
  */
 public class ShareCommand implements SubCommand {
 
@@ -24,38 +24,48 @@ public class ShareCommand implements SubCommand {
     @Override
     public void execute(CommandSender sender, String[] args) {
         if (!(sender instanceof Player player)) {
-            sender.sendMessage(ChatColor.RED + "Bu komut bir oyuncu tarafından kullanılmalıdır.");
+            sender.sendMessage(Messages.PLAYER_ONLY());
             return;
         }
 
         if (args.length == 0) {
-            sender.sendMessage(ChatColor.RED + "Kullanım: /gvd share <on|off>");
+            sender.sendMessage(Messages.SHARE_USAGE());
             return;
         }
 
         String action = args[0].toLowerCase();
         if (!action.equals("on") && !action.equals("off")) {
-            sender.sendMessage(ChatColor.RED + "Kullanım: /gvd share <on|off>");
+            sender.sendMessage(Messages.SHARE_USAGE());
             return;
         }
 
         Villager villager = targeter.getTargetVillager(player).orElse(null);
         if (villager == null) {
-            sender.sendMessage(ChatColor.RED + "Bu komutu kullanmak için bir köylüye bakın.");
+            sender.sendMessage(Messages.LOOK_AT_VILLAGER());
+            return;
+        }
+
+        // Kilitli köylü kontrolü - admin değilse değiştiremez
+        if (discountService.isLocked(villager) && !player.hasPermission("gvd.admin")) {
+            sender.sendMessage(Messages.VILLAGER_LOCKED());
             return;
         }
 
         if (action.equals("on")) {
             discountService.enableSync(villager);
-            sender.sendMessage(ChatColor.GREEN + "=== Paylaşım Açıldı ===");
-            sender.sendMessage(ChatColor.GRAY + "Meslek: " + ChatColor.WHITE + villager.getProfession());
+            sender.sendMessage(Messages.SHARE_ENABLED_HEADER());
+            sender.sendMessage(Messages.INFO_PROFESSION() + formatProfession(villager));
         } else {
             int cleared = discountService.clearDiscounts(villager);
             discountService.disableSync(villager);
-            sender.sendMessage(ChatColor.YELLOW + "=== Paylaşım Kapatıldı ===");
-            sender.sendMessage(ChatColor.GRAY + "Meslek: " + ChatColor.WHITE + villager.getProfession());
-            sender.sendMessage(ChatColor.GRAY + "Temizlenen indirim: " + ChatColor.WHITE + cleared);
+            sender.sendMessage(Messages.SHARE_DISABLED_HEADER());
+            sender.sendMessage(Messages.INFO_PROFESSION() + formatProfession(villager));
+            sender.sendMessage(Messages.SHARE_CLEARED() + cleared);
         }
+    }
+    
+    private String formatProfession(Villager villager) {
+        return villager.getProfession().name().toLowerCase().replace("_", " ");
     }
 
     @Override
@@ -65,6 +75,6 @@ public class ShareCommand implements SubCommand {
 
     @Override
     public String getDescription() {
-        return "Köylü için indirim paylaşımını aç/kapat (on|off)";
+        return "Toggle discount sharing (on|off)";
     }
 }

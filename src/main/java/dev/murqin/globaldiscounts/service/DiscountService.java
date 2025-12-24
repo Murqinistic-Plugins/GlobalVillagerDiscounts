@@ -1,5 +1,6 @@
 package dev.murqin.globaldiscounts.service;
 
+import dev.murqin.globaldiscounts.lang.Messages;
 import dev.murqin.globaldiscounts.util.RecipeKeyGenerator;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Server;
@@ -23,12 +24,14 @@ public class DiscountService {
     private final Plugin plugin;
     private final RecipeKeyGenerator keyGenerator;
     private final NamespacedKey enabledKey;
+    private final NamespacedKey lockedKey;
     private final Logger logger;
 
     public DiscountService(Plugin plugin, RecipeKeyGenerator keyGenerator) {
         this.plugin = plugin;
         this.keyGenerator = keyGenerator;
         this.enabledKey = new NamespacedKey(plugin, "sync_enabled");
+        this.lockedKey = new NamespacedKey(plugin, "locked");
         this.logger = plugin.getLogger();
     }
 
@@ -52,6 +55,28 @@ public class DiscountService {
      */
     public void disableSync(Villager villager) {
         villager.getPersistentDataContainer().set(enabledKey, PersistentDataType.BYTE, (byte) 0);
+    }
+
+    /**
+     * Köylünün kilitli olup olmadığını kontrol eder.
+     */
+    public boolean isLocked(Villager villager) {
+        PersistentDataContainer pdc = villager.getPersistentDataContainer();
+        return pdc.has(lockedKey) && pdc.getOrDefault(lockedKey, PersistentDataType.BYTE, (byte) 0) == 1;
+    }
+
+    /**
+     * Köylüyü kilitler - oyuncular share değiştiremez.
+     */
+    public void lock(Villager villager) {
+        villager.getPersistentDataContainer().set(lockedKey, PersistentDataType.BYTE, (byte) 1);
+    }
+
+    /**
+     * Köylünün kilidini açar.
+     */
+    public void unlock(Villager villager) {
+        villager.getPersistentDataContainer().remove(lockedKey);
     }
 
     /**
@@ -203,8 +228,7 @@ public class DiscountService {
         int cleared = clearDiscounts(villager);
         
         if (cleared > 0) {
-            logger.info("Meslek değişikliği nedeniyle " + villager.getUniqueId() + 
-                       " köylüsünden " + cleared + " senkronize indirim temizlendi.");
+            logger.info(Messages.LOG_CAREER_CHANGE(villager.getUniqueId(), cleared));
         }
     }
 }

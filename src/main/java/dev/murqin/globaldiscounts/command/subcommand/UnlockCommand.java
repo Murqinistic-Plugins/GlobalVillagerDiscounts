@@ -1,21 +1,21 @@
 package dev.murqin.globaldiscounts.command.subcommand;
 
+import dev.murqin.globaldiscounts.lang.Messages;
 import dev.murqin.globaldiscounts.service.DiscountService;
 import dev.murqin.globaldiscounts.util.VillagerTargeter;
-import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
 
 /**
- * Köylü için senkronizasyonu etkinleştiren komut.
+ * Köylünün kilidini açan admin komutu.
  */
-public class EnableCommand implements SubCommand {
+public class UnlockCommand implements SubCommand {
 
     private final DiscountService discountService;
     private final VillagerTargeter targeter;
 
-    public EnableCommand(DiscountService discountService, VillagerTargeter targeter) {
+    public UnlockCommand(DiscountService discountService, VillagerTargeter targeter) {
         this.discountService = discountService;
         this.targeter = targeter;
     }
@@ -23,29 +23,37 @@ public class EnableCommand implements SubCommand {
     @Override
     public void execute(CommandSender sender, String[] args) {
         if (!(sender instanceof Player player)) {
-            sender.sendMessage(ChatColor.RED + "Bu komut bir oyuncu tarafından kullanılmalıdır.");
+            sender.sendMessage(Messages.PLAYER_ONLY());
             return;
         }
 
         Villager villager = targeter.getTargetVillager(player).orElse(null);
         if (villager == null) {
-            sender.sendMessage(ChatColor.RED + "Bu komutu kullanmak için bir köylüye bakın.");
+            sender.sendMessage(Messages.LOOK_AT_VILLAGER());
             return;
         }
 
-        discountService.enableSync(villager);
-        
-        sender.sendMessage(ChatColor.GREEN + "=== Senkronizasyon Açıldı ===");
-        sender.sendMessage(ChatColor.GRAY + "Meslek: " + ChatColor.WHITE + villager.getProfession());
+        if (!discountService.isLocked(villager)) {
+            sender.sendMessage(Messages.NOT_LOCKED());
+            return;
+        }
+
+        discountService.unlock(villager);
+        sender.sendMessage(Messages.UNLOCK_SUCCESS());
+        sender.sendMessage(Messages.INFO_PROFESSION() + formatProfession(villager));
+    }
+    
+    private String formatProfession(Villager villager) {
+        return villager.getProfession().name().toLowerCase().replace("_", " ");
     }
 
     @Override
     public String getName() {
-        return "enable";
+        return "unlock";
     }
 
     @Override
     public String getDescription() {
-        return "Köylü için senkronizasyonu etkinleştir";
+        return "Unlock villager";
     }
 }

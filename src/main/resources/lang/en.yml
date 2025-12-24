@@ -1,0 +1,50 @@
+# GlobalVillagerDiscounts Language File - English
+# This is the default language file.
+
+# Errors
+player-only: "&cThis command must be used by a player."
+no-permission: "&cYou don't have permission to use this command."
+look-at-villager: "&cLook at a villager to use this command."
+share-usage: "&cUsage: /gvd share <on|off>"
+
+# Info command
+info-header: "&a=== Villager Info ==="
+info-profession: "&7Profession: &f"
+info-sync-status: "&7Sync Status: "
+info-sync-active: "&aActive"
+info-sync-disabled: "&cDisabled"
+info-no-discounts: "&7  No stored discounts."
+info-discounts-header: "&eDiscounts:"
+info-uuid: "&eUUID: &f"
+info-lock-status: "&7Lock Status: "
+info-locked: "&cLocked"
+info-unlocked: "&aUnlocked"
+
+# Share command
+share-enabled-header: "&a=== Sharing Enabled ==="
+share-disabled-header: "&e=== Sharing Disabled ==="
+share-cleared: "&7Cleared discounts: &f"
+
+# Clear command
+clear-header: "&a=== Discounts Cleared ==="
+clear-count: "&7Cleared: &f"
+clear-suffix: " discount(s)"
+
+# ClearAll command
+clearall-result: "&aCleared %d discounts from %d villagers."
+
+# Lock commands
+villager-locked: "&cThis villager is locked. Only admins can change share settings."
+already-locked: "&eThis villager is already locked."
+not-locked: "&eThis villager is not locked."
+lock-success: "&a=== Villager Locked ==="
+unlock-success: "&a=== Villager Unlocked ==="
+
+# Help
+help-header-player: "&a=== GlobalVillagerDiscounts ==="
+help-header-admin: "&a=== GVD Admin Commands ==="
+
+# Log messages (console)
+log-career-change: "Cleared %d synced discounts from villager %s due to career change."
+log-enabled: "GlobalVillagerDiscounts enabled!"
+log-disabled: "GlobalVillagerDiscounts disabled."
