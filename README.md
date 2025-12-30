@@ -1,3 +1,8 @@
+# Note
+
+- **The coding of this tool was done entirely by AI.**
+
+
 # GlobalVillagerDiscounts
 
 [![Minecraft Version](https://img.shields.io/badge/Minecraft-1.21%2B-brightgreen.svg)](https://www.minecraft.net/)
