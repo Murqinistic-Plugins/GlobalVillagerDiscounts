@@ -22,8 +22,8 @@ GlobalVillagerDiscounts shares villager trade discounts among all players. When 
 - 🛡️ **Safe** - Prices never below 1 emerald
 - ⚡ **Lightweight** - Minimal performance impact
 - 🌍 **Multi-Language** - English & Turkish, add your own!
-- � **Villager Locking** - Lock villagers to prevent player changes
-- �📊 **Tab Completion** - Easy command usage
+- 🔒 **Villager Locking** - Lock villagers to prevent player changes
+- 📊 **Tab Completion** - Easy command usage
 
 ## Commands
 
@@ -55,8 +55,8 @@ language: en  # or tr
 
 ## Requirements
 
-- **Server:** Spigot, Paper, or Purpur 1.21+
-- **Java:** 21
+- **Server:** Spigot, Paper, or Purpur 26.1+
+- **Java:** 25
 
 ## Compatibility
 

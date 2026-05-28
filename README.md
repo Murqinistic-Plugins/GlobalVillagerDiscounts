@@ -6,11 +6,11 @@
 
 # GlobalVillagerDiscounts
 
-[![Minecraft Version](https://img.shields.io/badge/Minecraft-1.21%2B-brightgreen.svg)](https://www.minecraft.net/)
-[![Java Version](https://img.shields.io/badge/Java-21-orange.svg)](https://openjdk.org/)
+[![Minecraft Version](https://img.shields.io/badge/Minecraft-26.1%2B-brightgreen.svg)](https://www.minecraft.net/)
+[![Java Version](https://img.shields.io/badge/Java-25-orange.svg)](https://openjdk.org/)
 [![Spigot](https://img.shields.io/badge/Spigot%20%2F%20Paper-Compatible-blue.svg)](https://www.spigotmc.org/)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![bStats](https://img.shields.io/bstats/servers/28448)](https://bstats.org/plugin/bukkit/AdvancedAFK/28505)
+[![bStats](https://img.shields.io/bstats/servers/28448)](https://bstats.org/plugin/bukkit/GlobalVillagerDiscounts/28505)
 
 **Synchronize villager curing discounts across all players on your server!**
 
@@ -70,8 +70,8 @@ language: en  # or tr
 
 ## 📋 Requirements
 
-- **Minecraft Server:** Spigot, Paper, or Purpur 1.21+
-- **Java:** 21 (LTS)
+- **Minecraft Server:** Spigot, Paper, or Purpur 26.1+
+- **Java:** 25
 
 ## 📥 Installation
 
