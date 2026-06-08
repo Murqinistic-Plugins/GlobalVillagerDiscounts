@@ -10,8 +10,13 @@ commands:
   gvd:
     description: GlobalVillagerDiscounts commands
     usage: /gvd <info|share> or /gvd admin <info|clear|clearall|share>
+    permission: gvd.use
+    permission-message: You don't have permission to use this command.
 
 permissions:
+  gvd.use:
+    description: Allows use of basic GVD commands
+    default: true
   gvd.admin:
     description: Allows use of admin commands (/gvd admin)
     default: op
