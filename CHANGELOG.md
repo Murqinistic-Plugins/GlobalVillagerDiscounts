@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.5.0] - 2026-06-09
+
+### ⚡ Performance & Safety
+- **NamespacedKey Caching**: Cached generated `NamespacedKey` instances in `RecipeKeyGenerator` to prevent CPU overhead and regex checks on GUI open.
+- **Vector Math Optimization**: Replaced `distance()` with `distanceSquared()` in `VillagerTargeter` to avoid heavy `Math.sqrt` calculations.
+- **Salt-Based Lazy Clear**: Implemented a salt-based clearing mechanism in `DiscountService` to make `/gvd clearall` an O(1) operation and fix the bug where unloaded villagers retained discounts.
+- **Null Safety**: Added checks to prevent exceptions on empty-ingredient custom recipes.
+
 ## [1.3.0] - 2024-12-24
 
 ### ✨ New Features
