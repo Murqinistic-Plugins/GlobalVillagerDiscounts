@@ -24,7 +24,7 @@ public class VillagerTargeter {
      */
     public Optional<Villager> getTargetVillager(Player player) {
         Villager target = null;
-        double closestDistance = MAX_DISTANCE;
+        double closestDistanceSquared = MAX_DISTANCE * MAX_DISTANCE;
         
         for (Entity entity : player.getNearbyEntities(MAX_DISTANCE, MAX_DISTANCE, MAX_DISTANCE)) {
             if (entity instanceof Villager villager) {
@@ -33,10 +33,10 @@ public class VillagerTargeter {
                 Vector direction = player.getLocation().getDirection();
                 
                 double angle = toEntity.angle(direction);
-                double distance = player.getLocation().distance(villager.getLocation());
+                double distanceSquared = player.getLocation().distanceSquared(villager.getLocation());
                 
-                if (angle < MAX_ANGLE && distance < closestDistance) {
-                    closestDistance = distance;
+                if (angle < MAX_ANGLE && distanceSquared < closestDistanceSquared) {
+                    closestDistanceSquared = distanceSquared;
                     target = villager;
                 }
             }

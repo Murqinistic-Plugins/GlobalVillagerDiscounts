@@ -25,14 +25,38 @@ public class DiscountService {
     private final RecipeKeyGenerator keyGenerator;
     private final NamespacedKey enabledKey;
     private final NamespacedKey lockedKey;
+    private final NamespacedKey saltKey;
     private final Logger logger;
+    private String currentSalt;
 
     public DiscountService(Plugin plugin, RecipeKeyGenerator keyGenerator) {
         this.plugin = plugin;
         this.keyGenerator = keyGenerator;
         this.enabledKey = new NamespacedKey(plugin, "sync_enabled");
         this.lockedKey = new NamespacedKey(plugin, "locked");
+        this.saltKey = new NamespacedKey(plugin, "applied_salt");
         this.logger = plugin.getLogger();
+        
+        // Salt yükle veya yeni üret
+        this.currentSalt = plugin.getConfig().getString("clear-salt", "");
+        if (this.currentSalt.isEmpty()) {
+            this.currentSalt = java.util.UUID.randomUUID().toString();
+            plugin.getConfig().set("clear-salt", this.currentSalt);
+            plugin.saveConfig();
+        }
+    }
+
+    /**
+     * Köylünün salt değerini kontrol eder ve gerekirse indirimleri temizler.
+     */
+    public void checkAndValidateSalt(Villager villager) {
+        PersistentDataContainer pdc = villager.getPersistentDataContainer();
+        String storedSalt = pdc.get(saltKey, PersistentDataType.STRING);
+        
+        if (storedSalt == null || !storedSalt.equals(currentSalt)) {
+            clearDiscounts(villager);
+            pdc.set(saltKey, PersistentDataType.STRING, currentSalt);
+        }
     }
 
     /**
@@ -91,6 +115,7 @@ public class DiscountService {
             
             if (currentDiscount < 0) {
                 NamespacedKey key = keyGenerator.generate(recipe);
+                if (key == null) continue;
                 Integer storedDiscount = pdc.get(key, PersistentDataType.INTEGER);
                 
                 if (storedDiscount == null || currentDiscount < storedDiscount) {
@@ -112,6 +137,10 @@ public class DiscountService {
         
         for (MerchantRecipe original : originalRecipes) {
             NamespacedKey key = keyGenerator.generate(original);
+            if (key == null) {
+                modifiedRecipes.add(original);
+                continue;
+            }
             Integer storedDiscount = pdc.get(key, PersistentDataType.INTEGER);
             int currentDiscount = original.getSpecialPrice();
             
@@ -141,7 +170,7 @@ public class DiscountService {
         int cleared = 0;
         for (MerchantRecipe recipe : recipes) {
             NamespacedKey key = keyGenerator.generate(recipe);
-            if (pdc.has(key)) {
+            if (key != null && pdc.has(key)) {
                 pdc.remove(key);
                 cleared++;
             }
@@ -155,6 +184,11 @@ public class DiscountService {
      * @return [temizlenen köylü sayısı, temizlenen indirim sayısı]
      */
     public int[] clearAllDiscounts() {
+        // Yeni bir salt üreterek diskteki (unloaded) köylülerin de yüklenince sıfırlanmasını garanti et
+        this.currentSalt = java.util.UUID.randomUUID().toString();
+        plugin.getConfig().set("clear-salt", this.currentSalt);
+        plugin.saveConfig();
+
         int villagersCleared = 0;
         int discountsCleared = 0;
         
@@ -162,6 +196,8 @@ public class DiscountService {
         for (org.bukkit.World world : server.getWorlds()) {
             for (Villager villager : world.getEntitiesByClass(Villager.class)) {
                 int cleared = clearDiscounts(villager);
+                // Yüklü köylülerin salt değerlerini de hemen eşitle
+                villager.getPersistentDataContainer().set(saltKey, PersistentDataType.STRING, currentSalt);
                 if (cleared > 0) {
                     discountsCleared += cleared;
                     villagersCleared++;
@@ -184,6 +220,7 @@ public class DiscountService {
         
         for (MerchantRecipe recipe : recipes) {
             NamespacedKey key = keyGenerator.generate(recipe);
+            if (key == null) continue;
             Integer stored = pdc.get(key, PersistentDataType.INTEGER);
             if (stored != null && stored < 0) {
                 result.add(new String[]{

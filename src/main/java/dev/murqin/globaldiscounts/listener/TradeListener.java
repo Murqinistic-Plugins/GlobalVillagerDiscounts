@@ -52,6 +52,7 @@ public class TradeListener implements Listener {
         }
 
         // İndirimleri yakala ve uygula
+        discountService.checkAndValidateSalt(villager);
         discountService.captureDiscounts(villager, merchant);
         discountService.applyStoredDiscounts(villager, merchant);
     }
